@@ -1,0 +1,27 @@
+# @solana/web3.js 1.98.4, unmodified, through `solmix serve` (2026-11-08 06:46 UTC, same mixnet client and exit as
+# live-2026-11-08.txt). Only the RPC URL differs; web3.js derives the PubSub URL itself (port + 1, same path).
+# no-bypass-hook.cjs records every TCP connect and DNS lookup of the Node process and flags any that is not loopback.
+# The fresh devnet key was created for this test and never funded, so the node must reject its transfer.
+
+$ sh -c 'cd node-test && SOLMIX_TEST_KEYFILE=../keys/devnet-throwaway.json node --require ./no-bypass-hook.cjs web3-client.mjs'
+@solana/web3.js, RPC http://127.0.0.1:8899 (mainnet), http://127.0.0.1:8899/devnet, http://127.0.0.1:8899/testnet; PubSub derived by web3.js
+mainnet getGenesisHash: 5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d  (3.2 s)
+mainnet getSlot: 466819461  (1.8 s)
+mainnet getBalance: 9300003.207553187 SOL  (1.7 s)
+mainnet getParsedAccountInfo(USDC mint): supply 8782731147.867207 USDC, 6 decimals  (1.5 s)
+mainnet getRecentPrioritizationFees: 150 slots  (1.6 s)
+devnet getGenesisHash: EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG  (1.0 s)
+devnet getVersion: 4.4.0  (0.9 s)
+devnet getEpochInfo: epoch 1203, slot 519935291, block height 507081659  (0.6 s)
+testnet getGenesisHash: 4uhcVJyU9pJkvQyS88uRDiswHXSCkY3zQawwpjk2NsNY  (0.8 s)
+devnet onSlotChange (PubSub websocket), 3 notifications: slots 519935306, 519935307, 519935308  (3.6 s)
+mainnet onAccountChange subscribe + unsubscribe (PubSub websocket): subscribed and removed  (9.6 s)
+fresh devnet key 91bH4MDy93FK3z3tz1VgbgNJbTPFi6A2ySEs2NpnvvU6 (created for this test, never funded)
+devnet getBalance(fresh key): 0 lamports  (1.6 s)
+devnet build + sign 1-lamport transfer locally: signature AXDbScyxCBVgmMw5xnnWmvvZhqhbSSMzswrz3utMpi1HhGCRw7aVzLcsH33ac8Qky4qPkz6YezBtcXWPkjQwA4q, 215 bytes  (2.6 s)
+devnet sendRawTransaction: ERROR Simulation failed. | Message: Transaction simulation failed: Attempt to debit an account but found no record of a prior credit.. | Logs: | []. | Catch the `SendTransactionError` and call `getLogs()` on it for full details.  (0.6 s)
+[hook] 9 connects/lookups, distinct: connect 127.0.0.1:8899, connect 127.0.0.1:8900
+[hook] OK: every connection went to loopback (the solmix gateway)
+
+(exit 0, wall 32.0s)
+

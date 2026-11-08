@@ -1,0 +1,14 @@
+# nym-socks5-client's own log (client id solmix) after its restart in section 6 of live-2026-11-08.txt: every SOCKS5
+# stream it opened into the mixnet for the gateway request after the restart, the second `solmix ip`, and the two
+# balance re-runs. 9 streams in all. 1.1.1.1 = DoH lookups over the mixnet; the others are the addresses of
+# the RPC nodes and api.ipify.org from those lookups. (The client truncates its log on start, so earlier streams are
+# not in it.)
+2026-11-08T06:47:08.957342Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 64.130.42.134:443 (id: 13352124638770064578)
+2026-11-08T06:47:16.098626Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 1.1.1.1:443 (id: 1854771432377050124)
+2026-11-08T06:47:23.151599Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 104.26.12.205:443 (id: 902326771669354138)
+2026-11-08T06:47:45.326905Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 1.1.1.1:443 (id: 10654185603939300713)
+2026-11-08T06:47:49.998089Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 172.66.150.162:443 (id: 11314437611827168600)
+2026-11-08T06:47:57.619708Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 1.1.1.1:443 (id: 10923752862649646791)
+2026-11-08T06:47:59.194164Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 148.51.214.9:443 (id: 14854668100284946277)
+2026-11-08T06:48:24.025289Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 1.1.1.1:443 (id: 4647906441373176768)
+2026-11-08T06:48:26.882461Z  INFO common/socks5-client-core/src/socks/client.rs:499: Starting proxy for 64.130.42.134:443 (id: 15317434039671913346)

@@ -1,0 +1,382 @@
+# solmix 0.1.0 live run, 2026-11-08 (06:42-06:48 UTC), real Nym mainnet mixnet
+# nym-socks5-client 1.1.86 (official release binary), SOCKS5 127.0.0.1:1095, reply SURBs on.
+# Every request below left through the Nym exit gateway picked by `solmix nym setup` (node 3225, RO); no clearnet
+# fallback exists. Wall times include a fresh mixnet stream, DoH over the mixnet, TLS and the genesis check.
+# Edits: local paths are shortened to $XDG_STATE_HOME and ~; section 1 starts with the setup of this client identity
+# earlier the same day (06:2x UTC), which `solmix start` then restarted. In section 2 the two `balance` runs of the
+# holder address were re-run at 06:47-06:48 UTC after a display fix (one line per token mint instead of one per
+# token account); everything else is from the 06:42-06:47 run. The address 9WzDX... is the example address of the
+# Solana docs (a large holder); 91bH4... is a key created for this test and never funded.
+
+## 1. Mixnet client and gateway (`solmix start`)
+
+$ solmix nym setup
+exit gateway: node 3225 (RO) perf=0.99 version=1.43.0, picked at random from 98
+initialised "solmix" -> 4xVh1Ut8EapCHv6uzGoP7r3EQrzjKhpk1SfijNerKnQx.8LMXopVqPZFLHpoYu97pQd7T3Z4WJjpvNHxPqqyVkaYs@6t2viJunc7J4KeDW7v8RkPcXvtXKhBnc7JvS5DUj7mxv
+id                 solmix
+pid                1274348
+socks5             127.0.0.1:1095
+provider           4xVh1Ut8EapCHv6uzGoP7r3EQrzjKhpk1SfijNerKnQx.8LMXopVqPZFLHpoYu97pQd7T3Z4WJjpvNHxPqqyVkaYs@6t2viJunc7J4KeDW7v8RkPcXvtXKhBnc7JvS5DUj7mxv
+anonymous_replies  true
+client_address     2SoBeA5H2ibFR2E5W5oJpkCGoLc8L6sdhookSStQnNWR.B97TrvrT6C4uTSXcB259AQq3A7JqXMf4rWVsaruSqfbc@9QbdcMoJEuYxUTHziyDfzTK8kC6G3mZmDYcN1Z2LP6Fp
+gateway            9QbdcMoJEuYxUTHziyDfzTK8kC6G3mZmDYcN1Z2LP6Fp
+log                $XDG_STATE_HOME/solmix/solmix.log
+
+$ solmix start
+client "solmix" already initialised (~/.nym/socks5-clients/solmix/config/config.toml); use --force to re-init
+mixnet client   solmix, SOCKS5 127.0.0.1:1095 (pid 1394914)
+gateway         pid 1395216, log $XDG_STATE_HOME/solmix/solmix-gateway.log
+  JSON-RPC      http://127.0.0.1:8899 (mainnet)   http://127.0.0.1:8899/devnet   http://127.0.0.1:8899/testnet
+  PubSub        ws://127.0.0.1:8900 (mainnet)     ws://127.0.0.1:8900/devnet     ws://127.0.0.1:8900/testnet
+use it:         solana config set --url http://127.0.0.1:8899
+
+(exit 0, wall 1.7s)
+
+$ solmix status
+mixnet client   solmix, SOCKS5 127.0.0.1:1095, pid 1394914
+  entry gateway 9QbdcMoJEuYxUTHziyDfzTK8kC6G3mZmDYcN1Z2LP6Fp
+  exit          4xVh1Ut8EapCHv6u...@6t2viJunc7J4KeDW7v8RkPcXvtXKhBnc7JvS5DUj7mxv
+gateway         pid 1395216 on http://127.0.0.1:8899 and ws://127.0.0.1:8900 (root = mainnet), log $XDG_STATE_HOME/solmix/solmix-gateway.log
+
+(exit 0, wall 0.0s)
+
+
+## 2. What the RPC nodes see, and the CLI over the mixnet (mainnet-beta, devnet, testnet)
+
+$ solmix ip
+https://api.ipify.org sees this request coming from 185.100.84.186 (9.90s over the mixnet)
+= Nym node 3225 (RO, exit gateway: true) in the nym-api node list
+
+(exit 0, wall 10.2s)
+
+$ solmix networks
+NETWORK  GENESIS HASH                                  GATEWAY PATH  UPSTREAMS (in order; PubSub at the wss:// of each unless shown)
+mainnet  5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d  /mainnet      solana-rpc.publicnode.com, public.rpc.solanavibestation.com, api.mainnet-beta.solana.com
+devnet   EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG  /devnet       api.devnet.solana.com
+testnet  4uhcVJyU9pJkvQyS88uRDiswHXSCkY3zQawwpjk2NsNY  /testnet      api.testnet.solana.com, solana-testnet-rpc.publicnode.com
+
+(exit 0, wall 0.0s)
+
+$ solmix info
+mainnet: slot 466818390, block height 444836790, epoch 1080 (59.8% through), solana-core 4.4.1, health ok
+  genesis 5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d verified (via solana-rpc.publicnode.com over the mixnet)
+  565744948469 transactions since genesis
+
+(exit 0, wall 8.2s)
+
+$ solmix info --network devnet
+devnet: slot 519934329, block height 507080717, epoch 1203 (55.2% through), solana-core 4.4.0, health ok
+  genesis EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG verified (via api.devnet.solana.com over the mixnet)
+  19855531445 transactions since genesis
+
+(exit 0, wall 6.2s)
+
+$ solmix info --network testnet
+testnet: slot 461972265, block height 413336770, epoch 1082 (16.7% through), solana-core 4.4.0, health ok
+  genesis 4uhcVJyU9pJkvQyS88uRDiswHXSCkY3zQawwpjk2NsNY verified (via api.testnet.solana.com over the mixnet)
+  706991138114 transactions since genesis
+
+(exit 0, wall 10.7s)
+
+$ solmix slot
+mainnet: slot 466818504 (confirmed), block height 444836907 (finalized); genesis verified, via solana-rpc.publicnode.com over the mixnet
+
+(exit 0, wall 7.3s)
+
+$ solmix slot --network devnet
+devnet: slot 519934441 (confirmed), block height 507080831 (finalized); genesis verified, via api.devnet.solana.com over the mixnet
+
+(exit 0, wall 9.0s)
+
+$ solmix slot --network testnet
+testnet: slot 461972368 (confirmed), block height 413336875 (finalized); genesis verified, via api.testnet.solana.com over the mixnet
+
+(exit 0, wall 5.9s)
+
+$ solmix balance 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM
+9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM on mainnet (via solana-rpc.publicnode.com over the mixnet):
+  9300003.207553187 SOL (9300003207553187 lamports, slot 466819805)
+  0 USDT (SPL Token, 8 accounts)
+  1109.537751 USDC (SPL Token, 14 accounts)
+  + 2802 other tokens with a non-zero SPL Token balance (--all-tokens lists them)
+  (SPL Token accounts via public.rpc.solanavibestation.com)
+  + 319 other tokens with a non-zero Token-2022 balance (--all-tokens lists them)
+  (Token-2022 accounts via public.rpc.solanavibestation.com)
+
+(exit 0, wall 38.7s)
+
+$ solmix balance 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM --network devnet
+9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM on devnet (via api.devnet.solana.com over the mixnet):
+  288.46471556 SOL (288464715560 lamports, slot 519935715)
+  496.477021 USDC (SPL Token)
+  + 234 other tokens with a non-zero SPL Token balance (--all-tokens lists them)
+  + 42 other tokens with a non-zero Token-2022 balance (--all-tokens lists them)
+
+(exit 0, wall 9.7s)
+
+$ solmix balance 91bH4MDy93FK3z3tz1VgbgNJbTPFi6A2ySEs2NpnvvU6 --network devnet --no-tokens
+91bH4MDy93FK3z3tz1VgbgNJbTPFi6A2ySEs2NpnvvU6 on devnet (via api.devnet.solana.com over the mixnet):
+  0 SOL (0 lamports, slot 519934732)
+
+(exit 0, wall 10.0s)
+
+$ solmix watch slot --network devnet --count 3
+[ 11.7s] devnet slot 519934787 (parent 519934786, root 519934784)
+[ 11.8s] devnet slot 519934788 (parent 519934787, root 519934785)
+[ 11.8s] devnet slot 519934789 (parent 519934788, root 519934787)
+3 notification(s) over the mixnet PubSub websocket in 11.8s
+
+(exit 0, wall 11.8s)
+
+$ solmix watch slot --count 3
+[ 10.1s] mainnet slot 466818978 (parent 466818977, root 466818975)
+[ 10.4s] mainnet slot 466818979 (parent 466818978, root 466818976)
+[ 10.6s] mainnet slot 466818980 (parent 466818979, root 466818977)
+3 notification(s) over the mixnet PubSub websocket in 10.6s
+
+(exit 0, wall 10.6s)
+
+$ solmix rpc getLatestBlockhash --network devnet
+{
+  "context": {
+    "apiVersion": "4.4.0",
+    "slot": 519934848
+  },
+  "value": {
+    "blockhash": "2bRQJufMHAafQeKP9at1bkqkBMd536w7J6YTj7uD4Bmt",
+    "lastValidBlockHeight": 507081370
+  }
+}
+(via api.devnet.solana.com over the mixnet)
+
+(exit 0, wall 4.3s)
+
+$ solmix probe
+NETWORK  UPSTREAM                           GENESIS CHECK + getSlot                                                      TIME   PUBSUB slotSubscribe     TIME
+mainnet  solana-rpc.publicnode.com          genesis ok, slot 466819109                                                   7.7s   slot 466819148 notified  5.9s
+mainnet  public.rpc.solanavibestation.com   genesis ok, slot 466819061                                                   14.1s  slot 466819084 notified  4.1s
+mainnet  api.mainnet-beta.solana.com        FAIL api.mainnet-beta.solana.com: genesis check: HTTP 403 (Your IP or provi  6.6s   -                        -
+devnet   api.devnet.solana.com              genesis ok, slot 519934879                                                   7.6s   slot 519934899 notified  5.9s
+testnet  api.testnet.solana.com             genesis ok, slot 461972894                                                   7.0s   slot 461972923 notified  5.8s
+testnet  solana-testnet-rpc.publicnode.com  genesis ok, slot 461972834                                                   10.3s  slot 461972864 notified  5.5s
+5 of 6 upstreams passed the genesis check and answered through the mixnet
+
+(exit 0, wall 31.8s)
+
+
+## 3. send-raw: local refusals, then the node's verdict on a transfer signed by a never-funded key
+
+$ sh -c 'cd node-test && node --require ./no-bypass-hook.cjs sign-transfer.mjs ../keys/devnet-throwaway.json --unsigned > ../work/unsigned.b64'
+[hook] 1 connects/lookups, distinct: connect 127.0.0.1:8899
+[hook] OK: every connection went to loopback (the solmix gateway)
+
+(exit 0, wall 6.7s)
+
+$ solmix send-raw work/unsigned.b64 --network devnet
+solmix: transaction is not signed by 91bH4MDy93FK3z3tz1VgbgNJbTPFi6A2ySEs2NpnvvU6 (signature 1 of 1 is empty): solmix only forwards signed transactions
+
+(exit 1, wall 0.0s)
+
+$ sh -c 'cd node-test && node --require ./no-bypass-hook.cjs sign-transfer.mjs ../keys/devnet-throwaway.json > ../work/signed.b64'
+[hook] 1 connects/lookups, distinct: connect 127.0.0.1:8899
+[hook] OK: every connection went to loopback (the solmix gateway)
+
+(exit 0, wall 1.8s)
+
+$ python3 -c 'import base64,sys; b=bytearray(base64.b64decode(open('"'"'work/signed.b64'"'"').read())); b[-8]=2; open('"'"'work/edited.b64'"'"','"'"'w'"'"').write(base64.b64encode(b).decode())'
+
+(exit 0, wall 0.0s)
+
+$ solmix send-raw work/edited.b64 --network devnet
+solmix: signature 1 of 1 does not verify for 91bH4MDy93FK3z3tz1VgbgNJbTPFi6A2ySEs2NpnvvU6 (the message was changed after signing, or signed by another key)
+
+(exit 1, wall 0.0s)
+
+$ solmix send-raw 'not a transaction' --network devnet
+solmix: not base64 or base58
+
+(exit 1, wall 0.0s)
+
+$ solmix send-raw work/signed.b64 --network devnet
+rejected: Transaction simulation failed: Attempt to debit an account but found no record of a prior credit. (code -32002) from api.devnet.solana.com
+  signature 2h6qwxB2o3gpcpK5zWk67mZuuombDXSGtjf2Ma6RStL22LqWAm96EBCskHxki3dFC3joqixXo1F44n8ehwxWqvFv (legacy tx, 1 instruction(s), 1 signature(s), fee payer 91bH4MDy93FK3z3tz1VgbgNJbTPFi6A2ySEs2NpnvvU6)
+
+(exit 1, wall 3.7s)
+
+$ solmix send-raw work/signed.b64 --network devnet --skip-preflight
+sent: 2h6qwxB2o3gpcpK5zWk67mZuuombDXSGtjf2Ma6RStL22LqWAm96EBCskHxki3dFC3joqixXo1F44n8ehwxWqvFv
+  (legacy tx, 1 instruction(s), 1 signature(s), fee payer 91bH4MDy93FK3z3tz1VgbgNJbTPFi6A2ySEs2NpnvvU6) via api.devnet.solana.com over the mixnet; check it with: solmix rpc getSignatureStatuses '[["2h6qwxB2o3gpcpK5zWk67mZuuombDXSGtjf2Ma6RStL22LqWAm96EBCskHxki3dFC3joqixXo1F44n8ehwxWqvFv"]]'
+
+(exit 0, wall 10.0s)
+
+
+## 4. The gateway with curl: three clusters, batch, health, and the guards
+
+$ curl -sS -X POST http://127.0.0.1:8899 -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getGenesisHash"}'
+{"jsonrpc":"2.0","result":"5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d","id":1}
+
+(exit 0, wall 12.3s)
+
+$ curl -sS -X POST http://127.0.0.1:8899/devnet -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getGenesisHash"}'
+{"jsonrpc":"2.0","result":"EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG","id":1}
+
+(exit 0, wall 2.6s)
+
+$ curl -sS -X POST http://127.0.0.1:8899/testnet -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getGenesisHash"}'
+{"jsonrpc":"2.0","result":"4uhcVJyU9pJkvQyS88uRDiswHXSCkY3zQawwpjk2NsNY","id":1}
+
+(exit 0, wall 11.4s)
+
+$ curl -sS -X POST http://127.0.0.1:8899/mainnet-beta -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+{"jsonrpc":"2.0","result":466819375,"id":1}
+
+(exit 0, wall 1.9s)
+
+$ curl -sS -X POST http://127.0.0.1:8899/devnet -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getBalance","params":["9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM"]}'
+{"jsonrpc":"2.0","result":{"context":{"apiVersion":"4.4.0","slot":519935195},"value":288464715560},"id":1}
+
+(exit 0, wall 3.3s)
+
+$ curl -sS -X POST http://127.0.0.1:8899 -d '[{"jsonrpc":"2.0","id":1,"method":"getSlot"},{"jsonrpc":"2.0","id":2,"method":"getBlockHeight"},{"jsonrpc":"2.0","id":3,"method":"getBalance","params":["9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM"]}]'
+[{"jsonrpc":"2.0","result":466819404,"id":1},{"jsonrpc":"2.0","result":444837804,"id":2},{"jsonrpc":"2.0","result":{"context":{"apiVersion":"4.4.1","slot":466819404},"value":9300003207553187},"id":3}]
+
+(exit 0, wall 2.0s)
+
+$ curl -sS http://127.0.0.1:8899/devnet/health
+ok
+(exit 0, wall 1.4s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899 -H 'Content-Type: application/json' -H 'Host: evil.example:8899' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+403
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899 -H 'Content-Type: application/json' -H 'Origin: https://evil.example' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+403
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X OPTIONS http://127.0.0.1:8899 -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST'
+403
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -w '\n%{http_code}\n' -X POST http://127.0.0.1:8899/devnet -H 'Content-Type: application/json' -H 'Origin: chrome-extension://bfnaelmomeimhlpmgjnjophhpkkoljpa' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+{"jsonrpc":"2.0","result":519935217,"id":1}
+
+200
+
+(exit 0, wall 2.5s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899/devnet/x -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+404
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899/robots.txt -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+404
+
+(exit 0, wall 0.0s)
+
+$ curl -sS --path-as-is -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899/%2e%2e/devnet -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+404
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899//devnet -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+404
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899/devnet/health/x -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+404
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899/unknownnet -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+404
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X PUT http://127.0.0.1:8899 -d '{}'
+405
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:8899 -H 'Content-Type: multipart/form-data; boundary=x' -d x
+415
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8900/devnet -H 'Upgrade: websocket' -H 'Connection: Upgrade' -H 'Sec-WebSocket-Version: 13' -H 'Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==' -H 'Origin: https://evil.example'
+403
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8900/devnet -H 'Upgrade: websocket' -H 'Connection: Upgrade' -H 'Sec-WebSocket-Version: 13'
+400
+
+(exit 0, wall 0.0s)
+
+
+## 5. @solana/web3.js, unmodified, through the gateway (RPC and PubSub)
+
+See live-web3.txt and live-gateway.log.
+
+
+## 6. No clearnet fallback: mixnet client stopped (gateway left running), then started again
+
+$ solmix nym stop
+stopped
+
+(exit 0, wall 0.0s)
+
+$ solmix slot --network devnet
+solmix: api.devnet.solana.com: no SOCKS5 proxy (nym-socks5-client) listening; refusing to fall back to a direct connection (127.0.0.1:1095: dial tcp 127.0.0.1:1095: connect: connection refused)
+
+(exit 1, wall 0.0s)
+
+$ solmix slot --network devnet --dns exit
+solmix: api.devnet.solana.com: no SOCKS5 proxy (nym-socks5-client) listening; refusing to fall back to a direct connection (127.0.0.1:1095: dial tcp 127.0.0.1:1095: connect: connection refused)
+
+(exit 1, wall 0.0s)
+
+$ solmix watch slot --network devnet --count 1
+solmix: api.devnet.solana.com: no SOCKS5 proxy (nym-socks5-client) listening; refusing to fall back to a direct connection (127.0.0.1:1095: dial tcp 127.0.0.1:1095: connect: connection refused)
+
+(exit 1, wall 0.0s)
+
+$ curl -sS -w '\n%{http_code}\n' -X POST http://127.0.0.1:8899/devnet -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+{"jsonrpc":"2.0","error":{"code":-32603,"message":"solmix: all upstreams failed over the mixnet (no clearnet fallback): api.devnet.solana.com: no SOCKS5 proxy (nym-socks5-client) listening; refusing to fall back to a direct connection (127.0.0.1:1095: dial tcp 127.0.0.1:1095: connect: connection refused)","data":{"reason":"MixnetUnavailable"}},"id":null}
+502
+
+(exit 0, wall 0.0s)
+
+$ curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8900/devnet -H 'Upgrade: websocket' -H 'Connection: Upgrade' -H 'Sec-WebSocket-Version: 13' -H 'Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ=='
+502
+
+(exit 0, wall 0.0s)
+
+$ solmix nym start
+id                 solmix
+pid                1455541
+socks5             127.0.0.1:1095
+provider           4xVh1Ut8EapCHv6uzGoP7r3EQrzjKhpk1SfijNerKnQx.8LMXopVqPZFLHpoYu97pQd7T3Z4WJjpvNHxPqqyVkaYs@6t2viJunc7J4KeDW7v8RkPcXvtXKhBnc7JvS5DUj7mxv
+anonymous_replies  true
+client_address     2SoBeA5H2ibFR2E5W5oJpkCGoLc8L6sdhookSStQnNWR.B97TrvrT6C4uTSXcB259AQq3A7JqXMf4rWVsaruSqfbc@9QbdcMoJEuYxUTHziyDfzTK8kC6G3mZmDYcN1Z2LP6Fp
+gateway            9QbdcMoJEuYxUTHziyDfzTK8kC6G3mZmDYcN1Z2LP6Fp
+log                $XDG_STATE_HOME/solmix/solmix.log
+
+(exit 0, wall 1.0s)
+
+$ curl -sS -X POST http://127.0.0.1:8899/devnet -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getSlot"}'
+{"jsonrpc":"2.0","result":519935401,"id":1}
+
+(exit 0, wall 7.1s)
+
+$ solmix ip
+https://api.ipify.org sees this request coming from 185.100.84.186 (15.07s over the mixnet)
+= Nym node 3225 (RO, exit gateway: true) in the nym-api node list
+
+(exit 0, wall 15.4s)
+

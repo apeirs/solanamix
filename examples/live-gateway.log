@@ -1,0 +1,45 @@
+# `solmix serve` log (started by `solmix start`), 2026-11-08 UTC, for the run in live-2026-11-08.txt and live-web3.txt.
+# One line per request or websocket message: network, JSON-RPC method (never params), upstream, timing.
+06:42:32 solmix gateway on http://127.0.0.1:8899  (root = mainnet; SOCKS5 127.0.0.1:1095)
+06:42:32 solmix PubSub on ws://127.0.0.1:8900
+06:45:39 devnet getLatestBlockhash -> mixnet -> api.devnet.solana.com HTTP 200, 225 bytes in 6.4s
+06:45:41 devnet getLatestBlockhash -> mixnet -> api.devnet.solana.com HTTP 200, 225 bytes in 1.5s
+06:46:07 mainnet getGenesisHash -> mixnet -> solana-rpc.publicnode.com HTTP 200, 81 bytes in 12.2s
+06:46:09 devnet getGenesisHash -> mixnet -> api.devnet.solana.com HTTP 200, 81 bytes in 2.6s
+06:46:21 testnet getGenesisHash -> mixnet -> api.testnet.solana.com HTTP 200, 81 bytes in 11.4s
+06:46:23 mainnet getSlot -> mixnet -> solana-rpc.publicnode.com HTTP 200, 44 bytes in 1.8s
+06:46:26 devnet getBalance -> mixnet -> api.devnet.solana.com HTTP 200, 107 bytes in 3.3s
+06:46:28 mainnet batch of 3 (getSlot x1, getBlockHeight x1, getBalance x1) -> mixnet -> solana-rpc.publicnode.com HTTP 200, 201 bytes in 1.9s
+06:46:29 devnet GET /health -> mixnet -> api.devnet.solana.com HTTP 200, 2 bytes in 1.4s
+06:46:32 devnet getSlot -> mixnet -> api.devnet.solana.com HTTP 200, 44 bytes in 2.5s
+06:46:35 devnet getSlot -> mixnet -> api.devnet.solana.com HTTP 200, 44 bytes in 2.5s
+06:46:39 mainnet getGenesisHash -> mixnet -> solana-rpc.publicnode.com HTTP 200, 118 bytes in 3.1s
+06:46:40 mainnet getSlot -> mixnet -> solana-rpc.publicnode.com HTTP 200, 81 bytes in 1.8s
+06:46:42 mainnet getBalance -> mixnet -> solana-rpc.publicnode.com HTTP 200, 148 bytes in 1.7s
+06:46:44 mainnet getAccountInfo -> mixnet -> solana-rpc.publicnode.com HTTP 200, 540 bytes in 1.5s
+06:46:45 mainnet getRecentPrioritizationFees -> mixnet -> solana-rpc.publicnode.com HTTP 200, 6223 bytes in 1.5s
+06:46:46 devnet getGenesisHash -> mixnet -> api.devnet.solana.com HTTP 200, 118 bytes in 1.0s
+06:46:47 devnet getVersion -> mixnet -> api.devnet.solana.com HTTP 200, 120 bytes in 0.9s
+06:46:48 devnet getEpochInfo -> mixnet -> api.devnet.solana.com HTTP 200, 207 bytes in 0.6s
+06:46:49 testnet getGenesisHash -> mixnet -> api.testnet.solana.com HTTP 200, 118 bytes in 0.8s
+06:46:50 devnet websocket open -> mixnet -> api.devnet.solana.com in 1.7s
+06:46:50 devnet websocket slotSubscribe -> mixnet -> api.devnet.solana.com
+06:46:52 devnet websocket slotUnsubscribe -> mixnet -> api.devnet.solana.com
+06:46:53 devnet websocket closed after 4.1s: 2 messages up, 937 bytes down
+06:46:56 mainnet websocket open -> mixnet -> solana-rpc.publicnode.com in 3.6s
+06:46:56 mainnet websocket accountSubscribe -> mixnet -> solana-rpc.publicnode.com
+06:46:58 devnet websocket open -> mixnet -> api.devnet.solana.com in 4.7s
+06:46:59 devnet websocket closed after 5.2s: 0 messages up, 0 bytes down
+06:47:00 mainnet websocket accountUnsubscribe -> mixnet -> solana-rpc.publicnode.com
+06:47:01 mainnet websocket ping -> mixnet -> solana-rpc.publicnode.com
+06:47:02 mainnet websocket closed after 10.1s: 3 messages up, 118 bytes down
+06:47:04 devnet getBalance -> mixnet -> api.devnet.solana.com HTTP 200, 133 bytes in 1.6s
+06:47:06 devnet websocket open -> mixnet -> api.devnet.solana.com in 6.0s
+06:47:06 devnet getLatestBlockhash -> mixnet -> api.devnet.solana.com HTTP 200, 225 bytes in 2.6s
+06:47:06 mainnet websocket open -> mixnet -> solana-rpc.publicnode.com in 2.8s
+06:47:06 devnet websocket closed after 6.5s: 0 messages up, 0 bytes down
+06:47:07 mainnet websocket closed after 3.3s: 0 messages up, 0 bytes down
+06:47:07 devnet sendTransaction -> mixnet -> api.devnet.solana.com HTTP 200, 493 bytes in 0.6s
+06:47:07 devnet getSlot FAILED after 0.0s: api.devnet.solana.com: no SOCKS5 proxy (nym-socks5-client) listening; refusing to fall back to a direct connection (127.0.0.1:1095: dial tcp 127.0.0.1:1095: connect: connection refused)
+06:47:07 devnet websocket FAILED after 0.0s: api.devnet.solana.com: no SOCKS5 proxy (nym-socks5-client) listening; refusing to fall back to a direct connection (127.0.0.1:1095: dial tcp 127.0.0.1:1095: connect: connection refused)
+06:47:16 devnet getSlot -> mixnet -> api.devnet.solana.com HTTP 200, 44 bytes in 7.1s
